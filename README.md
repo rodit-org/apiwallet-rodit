@@ -8,17 +8,17 @@ This project is released under the [GPLv2](COPYING).
 More information may be found at [WireGuard.com](https://www.wireguard.com/).**
 
 ## How to Install
-mkdir walletsh
-cd walletsh
-Download rodtwallet.sh from Github
-chmod XXX ./rodtwallet
-Install NEAR CLI in the WalletSH directory with:
-sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash
-sudo apt-get install -y nodejs
-sudo apt-get install --only-upgrade nodejs
-sudo apt install npm
-sudo npm install -g npm@8.19.1
-sudo npm install -g near-cli
+- mkdir walletsh
+- cd walletsh
+- Download rodtwallet.sh from Github
+- chmod XXX ./rodtwallet
+- Install NEAR CLI in the WalletSH directory with:
+- sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash
+- sudo apt-get install -y nodejs
+- sudo apt-get install --only-upgrade nodejs
+- sudo apt install npm
+- sudo npm install -g npm@8.19.1
+- sudo npm install -g near-cli
 
 Check that .bashrc contains the lines
 export BLOCKCHAIN_ENV=testnet (for testnet, mainnet for mainnet),
