@@ -24,6 +24,7 @@ Check that .bashrc contains the lines
 export BLOCKCHAIN_ENV=testnet (for testnet, mainnet for mainnet),
 (For testnet): export NFTCONTRACTID=$(cat ~/cgtun/walletsh/dev-account)
 
+A file contains the accountID of the smartcontract ("dev-account" for testnet and "account" for mainnet)
 
 ## How to Use
 You need to set the blockchain network:
