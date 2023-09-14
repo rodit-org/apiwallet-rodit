@@ -12,7 +12,7 @@ Download cgwalletinstall.sh
 
 Make it executable
 
-Run it.
+Run it. It will install the npm, nodejs, jq, and near cli dependencies to be able to handle RODT with rodtwallet.sh
 
 ## How to Use
 You need to set the blockchain network:
