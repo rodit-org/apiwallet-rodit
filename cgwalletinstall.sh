@@ -28,8 +28,9 @@ echo "export NEAR_ENV=\"$NEAR_ENV\"" >> ~/.bashrc
 # If NFTCONTRACTID is not set, set it to "UNKNOWN"
 : "${NFTCONTRACTID:=UNKNOWN}"
 
-VERSION="1.0.0"
+VERSION="1.1.0"
 echo "Cableguard WALLET install, Version $VERSION running on $BLOCKCHAIN_ENV at Smart Contract $NFTCONTRACTID. Get help with: $0 help"
+echo "npm, jq, nodejs and near CLI will be installed"
 
 export LC_ALL=C
 
@@ -37,6 +38,7 @@ export LC_ALL=C
 
 sudo apt-get update
 sudo apt-get install -y ca-certificates curl gnupg
+sudo apt install -y npm
 sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 sudo npm install -g near-cli
@@ -71,10 +73,14 @@ if [ ! -d "cgwallet" ]; then
     exit 1
 fi
 
-echo "Installation completed successfully."
+echo "Installation of npm, jq, nodejs and near cli probably completed successfully."
+echo "Now you can use rodwallet.sh"
 
 ~/cgwallet/rodtwallet.sh genaccount
 
-chmod 400 your_file
+#chmod 400 your_file
 
 echo "Please write down the account number, you can use it to configue Cableguard TUN"
+echo "You can use RODTWALLET as follows, if you have the correct network and smartcontract set"
+
+~/cgwallet/rodtwallet.sh genaccount
