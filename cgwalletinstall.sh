@@ -15,8 +15,8 @@ else
 fi
 
 # Export the variables
-export BLOCKCHAIN_ENV
-export NEAR_ENV
+export BLOCKCHAIN_ENV=\"$BLOCKCHAIN_ENV\"
+export NEAR_ENV=\"$NEAR_ENV\"
 
 # Append the export commands to ~/.bashrc
 echo "export BLOCKCHAIN_ENV=\"$BLOCKCHAIN_ENV\"" >> ~/.bashrc
@@ -81,6 +81,6 @@ echo "Now you can use rodwallet.sh"
 #chmod 400 your_file
 
 echo "Please write down the account number, you can use it to configue Cableguard TUN"
-echo "You can use RODTWALLET as follows, if you have the correct network and smartcontract set"
+echo "You can use RODTWALLET as follows, if you have the correct network and smartcontract set in the NFTCONTRACTID env variable"
 
-~/cgwallet/rodtwallet.sh genaccount
+~/cgwallet/rodtwallet.sh help

@@ -1,12 +1,12 @@
 #!/bin/bash
 
-VERSION="1.4.1"
+VERSION="1.4.2"
 #export NFTCONTRACTID=$(cat ./walletsh/account)
 echo "Version" $VERSION "running on " $BLOCKCHAIN_ENV "at Smart Contract" $NFTCONTRACTID " Get help with: "$0" help"
 
 if [ "$1" == "help" ]; then
     echo "Usage: "$0" [account_id] [Options]"
-    echo "Will not work when called from $home you need to be in the cgtun directory"
+    echo "Works best when called from the cgtun directory"
     echo ""
     echo "Options:"
     echo "  "$0" List of available accounts"
