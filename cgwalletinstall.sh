@@ -15,8 +15,8 @@ else
 fi
 
 # Export the variables
-export BLOCKCHAIN_ENV=\"$BLOCKCHAIN_ENV\"
-export NEAR_ENV=\"$NEAR_ENV\"
+export BLOCKCHAIN_ENV=$BLOCKCHAIN_ENV
+export NEAR_ENV=$NEAR_ENV
 
 # Append the export commands to ~/.bashrc
 echo "export BLOCKCHAIN_ENV=\"$BLOCKCHAIN_ENV\"" >> ~/.bashrc
