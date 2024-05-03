@@ -8,7 +8,7 @@ This project is released under the [GPLv2](COPYING).
 More information may be found at [WireGuard.com](https://www.wireguard.com/).**
 
 ## How to Install
-Download cgwalletinstall.sh
+Download with: wget https://cableguard.fra1.digitaloceanspaces.com/cgwalletinstall.sh
 
 Make it executable
 
