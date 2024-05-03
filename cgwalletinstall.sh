@@ -22,8 +22,6 @@ fi
 echo "export BLOCKCHAIN_ENV="$BLOCKCHAIN_ENV"" >> ~/.bashrc
 echo "export NEAR_ENV="$NEAR_ENV"" >> ~/.bashrc
 
-exit
-
 # Display a message
 #!/bin/bash
 
