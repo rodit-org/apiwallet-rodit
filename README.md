@@ -32,5 +32,8 @@ From a funded wallet you need to send 0.01 NEAR to each new account to prime it
 For testnet use: https://wallet.testnet.near.org/
 
 # Cableguard Ecosystem
+# Cableguard Ecosystem
 - Cableguard TUN: VPN tunnels
 - Cableguard TOOLS: local VPN tunnel configuration
+- Cableguard FORGE: RODT minter
+- Cableguard WALLET: RODT manager
