@@ -3,7 +3,7 @@
 #SPDX-License-Identifier: GPL-2.0
 #Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
 
-VERSION="1.5.9"
+VERSION="1.5.11"
 #export RODITCONTRACTID=$(cat ./walletsh/account)
 echo "Version" $VERSION "running on " $BLOCKCHAIN_ENV "at Smart Contract" $RODITCONTRACTID " Get help with: "$0" help"
 
@@ -70,7 +70,7 @@ if [ -n "$1" ]; then
     echo "The following is a list of RODT belonging to the input account:"
     output2=$(~/near-cli-rs/target/release/near contract call-function as-read-only "$RODITCONTRACTID" \
         nft_tokens_for_owner text-args "{\"account_id\": \"$1\"}" network-config "$BLOCKCHAIN_ENV" now)
-    filtered_output2=$(echo "$output2" | jq -r '.[].token_id')
+    filtered_output2=$(echo "$output2"| grep 'token_id'| awk -F'"' '{print $4}')
     echo "$filtered_output2"
     near_state=$(~/near-cli-rs/target/release/near account view-account-summary "$1" \
         network-config "$BLOCKCHAIN_ENV" now)
