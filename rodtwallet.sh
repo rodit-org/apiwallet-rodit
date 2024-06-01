@@ -3,12 +3,13 @@
 #SPDX-License-Identifier: GPL-2.0
 #Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
 
-VERSION="1.5.11"
+VERSION="1.90.91"
 #export RODITCONTRACTID=$(cat ./walletsh/account)
 echo "Version" $VERSION "running on " $BLOCKCHAIN_ENV "at Smart Contract" $RODITCONTRACTID " Get help with: "$0" help"
 
 if [ "$1" == "help" ]; then
     echo "Usage: "$0" [account_id] [Options]"
+    echo "Works best when called from the cgtun directory"
     echo ""
     echo "Options:"
     echo "  "$0" List of available accounts"
@@ -22,13 +23,20 @@ if [ "$1" == "help" ]; then
 fi
 
 if [ "$1" == "genaccount" ]; then
-    account=$(~/near-cli-rs/target/release/near account create-account \
-        fund-later \
-        use-auto-generation \
-        save-to-folder ~/.near-credentials/$BLOCKCHAIN_ENV | grep -oP '(?<=~/.near-credentials/'"$BLOCKCHAIN_ENV"'/)[^/]+(?=.json)')
-    echo "Acccount number:"
+    # Add code for generating a new uninitialized accountID
+    echo "Generating a new uninitialized accountID..."
+    near generate-key --saveImplicit
+    echo Acccount number:
     ls -t "$HOME/.near-credentials/$BLOCKCHAIN_ENV/" | head -n 1 | xargs -I {} basename {} .json
-    echo "The account does not exist in the blockchain as it has no balance. You need to initialize it with at least 0.01 NEAR."
+    echo "The balance of the account is:"
+    near_state=$(near state "$1")
+    balance=$(echo "$near_state" | awk -F ': ' '/formattedAmount/ {print $2}')
+    if [ -z "$balance" ]; then
+        echo "The account does not exist in the blockchain as it has no balance. You need to initialize it with at least 0.01 NEAR."
+    else
+        echo "Account $1"
+        echo "Balance: '$balance'"
+    fi
     exit 0
 fi
 
@@ -40,11 +48,12 @@ fi
 
 if [ "$3" = "init" ] && [ -n "$3" ]; then
     echo "Initializing with 0.01 NEAR "$2""
-    ~/near-cli-rs/target/release/near tokens $1 send-near $2 '0.01 NEAR' network-config testnet sign-with-keychain send
+    near send $1 $2 0.01
     exit 0
 fi
 
 if [ -z $1  ]; then
+    echo "There is a lag while collecting information from the blockchain"
     echo "The following is a list of accounts found in ~/.near-credentials :"
     formatted_output=$(ls -tr "$HOME/.near-credentials/$BLOCKCHAIN_ENV/" | awk -F '.' '{ print $1 }')
     echo "$formatted_output"
@@ -57,9 +66,8 @@ if [ -n "$2" ]; then
         cat "$key_file" | jq -r '"\(.private_key | sub("ed25519:"; ""))\n\(.account_id)"'
         exit 0
     else
-        echo "RODiT Contents"
-        ~/near-cli-rs/target/release/near contract call-function as-read-only "$RODITCONTRACTID" \
-        nft_tokens text-args "{\"account_id\": \"$1\"}" network-config "$BLOCKCHAIN_ENV" now
+        echo "RODT Contents"
+        near view $RODITCONTRACTID nft_token "{\"token_id\": \"$2\"}"
         exit 0
     fi
 fi
@@ -67,17 +75,16 @@ fi
 if [ -n "$1" ]; then
     echo "There is a lag while collecting information from the blockchain"
     echo "The following is a list of RODT belonging to the input account:"
-    output2=$(~/near-cli-rs/target/release/near contract call-function as-read-only "$RODITCONTRACTID" \
-        nft_tokens_for_owner text-args "{\"account_id\": \"$1\"}" network-config "$BLOCKCHAIN_ENV" now)
-    filtered_output2=$(echo "$output2"| grep 'token_id'| awk -F'"' '{print $4}')
+    output2=$(near view "$RODITCONTRACTID" nft_tokens_for_owner "{\"account_id\": \"$1\"}")
+    filtered_output2=$(echo "$output2" | grep -o "token_id: '[^']*'" | sed "s/token_id: //")
     echo "$filtered_output2"
-    near_state=$(~/near-cli-rs/target/release/near account view-account-summary "$1" \
-        network-config "$BLOCKCHAIN_ENV" now)
-    balance=$(echo "$near_state"|grep "Native account balance")
+    echo "The balance of the account is:"
+    near_state=$(near state "$1")
+    balance=$(echo "$near_state" | awk -F ': ' '/formattedAmount/ {print $2}')
     if [ -z "$balance" ]; then
         echo "The account does not exist in the blockchain as it has no balance. You need to initialize it with at least 0.01 NEAR."
     else
         echo "Account $1"
-        echo "Has a '$balance'"
+        echo "Balance: '$balance'"
     fi
 fi
