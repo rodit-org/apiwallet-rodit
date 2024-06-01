@@ -3,8 +3,7 @@
 #SPDX-License-Identifier: GPL-2.0
 #Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
 
-VERSION="1.5.11"
-#export RODITCONTRACTID=$(cat ./walletsh/account)
+VERSION="1.90.11"
 echo "Version" $VERSION "running on " $BLOCKCHAIN_ENV "at Smart Contract" $RODITCONTRACTID " Get help with: "$0" help"
 
 if [ "$1" == "help" ]; then
@@ -12,11 +11,11 @@ if [ "$1" == "help" ]; then
     echo ""
     echo "Options:"
     echo "  "$0" List of available accounts"
-    echo "  "$0" <accountID>           : Lists the RODT Ids in the account and its balance"
+    echo "  "$0" <accountID>           : Lists the RODiTT Ids in the account and its balance"
     echo "  "$0" <accountID> keys      : Displays the accountID and the Private Key of the account"
-    echo "  "$0" <accountID> <RODT Id> : Displays the indicated RODT"
+    echo "  "$0" <accountID> <RODiT Id> : Displays the indicated RODiT"
     echo "  "$0" <funding accountId> <unitialized accountId> init    : Initializes account with 0.01 NEAR from funding acount"
-    echo "  "$0" <origin accountId>  <destination accountId> <rotid> : Sends RODT from origin account to destination account"
+    echo "  "$0" <origin accountId>  <destination accountId> <rotid> : Sends RODiT from origin account to destination account"
     echo "  "$0" genaccount            : Creates a new uninitialized accountID"
     exit 0
 fi
@@ -33,14 +32,14 @@ if [ "$1" == "genaccount" ]; then
 fi
 
 if [ -n "$3" ] && [ "$3" != "init" ]; then
-    echo "Sending RODT $3 from $1 to $2..."
-    near call $RODITCONTRACTID nft_transfer "{\"receiver_id\": \"$2\", \"token_id\": \"$3\"}" --accountId $1 --depositYocto 1
+    echo "Sending RODiT $3 from $1 to $2..."
+    near contract call-function as-transaction "$RODITCONTRACTID" nft_transfer json-args "{\"receiver_id\": \"$2\", \"token_id\": \"$3\"}" prepaid-gas '30 TeraGas' attached-deposit '1 yoctoNEAR' sign-as "$1" network-config "$BLOCKCHAIN_ENV" sign-with-keychain send
     exit 0
 fi
 
 if [ "$3" = "init" ] && [ -n "$3" ]; then
     echo "Initializing with 0.01 NEAR "$2""
-    ~/near-cli-rs/target/release/near tokens $1 send-near $2 '0.01 NEAR' network-config testnet sign-with-keychain send
+    ~/near-cli-rs/target/release/near tokens $1 send-near $2 '0.01 NEAR' network-config $BLOCKCHAIN_ENV sign-with-keychain send
     exit 0
 fi
 
@@ -58,18 +57,21 @@ if [ -n "$2" ]; then
         exit 0
     else
         echo "RODiT Contents"
-        ~/near-cli-rs/target/release/near contract call-function as-read-only "$RODITCONTRACTID" \
-        nft_tokens text-args "{\"account_id\": \"$1\"}" network-config "$BLOCKCHAIN_ENV" now
+	    output3=$(~/near-cli-rs/target/release/near contract call-function as-read-only "$RODITCONTRACTID" \
+            nft_tokens_for_owner text-args "{\"account_id\": \"$1\"}" network-config "$BLOCKCHAIN_ENV" now | \
+            sed '/^No logs/d;/^------------/d;/^Result:/d;/^[[:space:]]*$/d' | \
+            jq --arg token_id "$2" '.[] | select(.token_id == $token_id) | {token_id, metadata}'  2>/dev/null)
+        echo "$output3"
         exit 0
     fi
 fi
 
 if [ -n "$1" ]; then
     echo "There is a lag while collecting information from the blockchain"
-    echo "The following is a list of RODT belonging to the input account:"
+    echo "The following is a list of RODiT belonging to the input account:"
     output2=$(~/near-cli-rs/target/release/near contract call-function as-read-only "$RODITCONTRACTID" \
         nft_tokens_for_owner text-args "{\"account_id\": \"$1\"}" network-config "$BLOCKCHAIN_ENV" now)
-    filtered_output2=$(echo "$output2"| grep 'token_id'| awk -F'"' '{print $4}')
+    filtered_output2=$(echo "$output2" | grep 'token_id'| awk -F'"' '{print $4}')
     echo "$filtered_output2"
     near_state=$(~/near-cli-rs/target/release/near account view-account-summary "$1" \
         network-config "$BLOCKCHAIN_ENV" now)

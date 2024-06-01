@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-2.0
 # Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
 
-VERSION="1.1.3"
+VERSION="1.90.3"
 
 # Function to display help message
 show_help() {
@@ -36,17 +36,17 @@ install_jq() {
     fi
 }
 
-# Function to clone and run rodtwallet
+# Function to clone and run roditwallet
 setup_cgwallet() {
     git clone https://github.com/cableguard/cgwallet
     if [ ! -f ~/cgwallet/roditwallet.sh ]; then
-        echo "Error: rodtwallet.sh script not found."
+        echo "Error: roditwallet.sh script not found."
         exit 1
     fi
-    chmod +x ~/cgwallet/rodtwallet.sh
-    ~/cgwallet/rodtwallet.sh genaccount
+    chmod +x ~/cgwallet/roditwallet.sh
+    ~/cgwallet/roditwallet.sh genaccount
     echo "Please write down the account number, you can use it to configure Cableguard TUN"
-    echo "You can use RODTWALLET if you have the correct network and smartcontract set in the RODITCONTRACTID env variable"
+    echo "You can use RODiTWALLET if you have the correct network and smartcontract set in the RODITCONTRACTID env variable"
 }
 
 # Main script execution
