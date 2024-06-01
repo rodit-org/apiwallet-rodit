@@ -1,86 +1,76 @@
 #!/bin/bash
 
-#SPDX-License-Identifier: GPL-2.0
-#Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
 
-VERSION="1.0.0"
-#export NFTCONTRACTID=$(cat ./walletsh/account)
-echo "Version" $VERSION "running on " $BLOCKCHAIN_ENV " "
+VERSION="1.1.3"
 
-#Step 1: Add environment variables to .bashrc
+# Function to display help message
+show_help() {
+    echo "Usage: $0 {help|testnet|mainnet}"
+    echo "  help    : List of commands"
+    echo "  testnet RODIT_CONTRACT_ID: Installs cgwallet, NEAR CLI and configure testnet"
+    echo "  mainnet RODIT_CONTRACT_ID: Installs cgwallet, NEAR CLI and configure mainnet"
+}
 
-# If no command-line arguments provided, set to "mainnet"
+# Function to append environment variables to ~/.bashrc
+add_env_vars() {
+    export BLOCKCHAIN_ENV=$1
+    export RODITCONTRACTID=$2
+    echo "export BLOCKCHAIN_ENV="$BLOCKCHAIN_ENV"" >> ~/.bashrc
+    echo "export RODITCONTRACTID="$RODITCONTRACTID"" >> ~/.bashrc
+}
+
+# Function to install NEAR CLI
+install_near_cli() {
+    sudo apt-get update
+    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/near/near-cli-rs/releases/download/v0.10.2/near-cli-rs-installer.sh | sh
+}
+
+# Function to install jq
+install_jq() {
+    sudo apt install -y jq
+    if ! command -v jq &>/dev/null; then
+        echo "Error: jq installation failed."
+        exit 1
+    fi
+}
+
+# Function to clone and run rodtwallet
+setup_cgwallet() {
+    git clone https://github.com/cableguard/cgwallet
+    if [ ! -f ~/cgwallet/roditwallet.sh ]; then
+        echo "Error: rodtwallet.sh script not found."
+        exit 1
+    fi
+    chmod +x ~/cgwallet/rodtwallet.sh
+    ~/cgwallet/rodtwallet.sh genaccount
+    echo "Please write down the account number, you can use it to configure Cableguard TUN"
+    echo "You can use RODTWALLET if you have the correct network and smartcontract set in the RODITCONTRACTID env variable"
+}
+
+# Main script execution
+if [ "$1" == "help" ]; then
+    show_help
+    exit 0
+fi
+
+# Set environment variables based on command-line arguments
 if [ $# -eq 0 ]; then
-	export BLOCKCHAIN_ENV="mainnet"
-	export NEAR_ENV="mainnet"
+    BLOCKCHAIN_ENV="mainnet"
 else
-	export BLOCKCHAIN_ENV="$1"
-    	export NEAR_ENV="$1"
+    BLOCKCHAIN_ENV="$1"
 fi
 
-# Append the export commands to ~/.bashrc
-echo "export BLOCKCHAIN_ENV="$BLOCKCHAIN_ENV"" >> ~/.bashrc
-echo "export NEAR_ENV="$NEAR_ENV"" >> ~/.bashrc
+# Ensure RODITCONTRACTID is set or default to UNKNOWN
+: "${RODITCONTRACTID:=UNKNOWN}"
 
-# Display a message
-#!/bin/bash
+# Add environment variables to .bashrc
+add_env_vars
 
-# If NFTCONTRACTID is not set, set it to "UNKNOWN"
-: "${NFTCONTRACTID:=UNKNOWN}"
+# Install necessary components
+install_near_cli
+install_jq
 
-VERSION="1.1.0"
-echo "Cableguard WALLET install, Version $VERSION running on $BLOCKCHAIN_ENV at Smart Contract $NFTCONTRACTID. Get help with: $0 help"
-echo "npm, jq, nodejs and near CLI will be installed"
-
-export LC_ALL=C
-
-#Step 2: Install Node.js and npm
-
-sudo apt-get update
-sudo apt-get install -y ca-certificates curl gnupg
-sudo apt install -y npm
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-sudo npm install -g near-cli
-
-#Check if Node.js and npm were installed successfully
-
-if ! command -v node &>/dev/null || ! command -v npm &>/dev/null; then
-    echo "Error: Node.js and/or npm installation failed."
-    exit 1
-fi
-
-#Step 2: Install jq
-
-sudo apt install -y jq
-
-#Check if jq was installed successfully
-
-if ! command -v jq &>/dev/null; then
-    echo "Error: jq installation failed."
-    exit 1
-fi
-
-#Step 3: Clone the GitHub repository and create the cgwallet directory
-
-mkdir -p cgwallet
-git clone https://github.com/alanesmizi/cgwallet.git  cgwallet
-
-#Check if the repository was cloned successfully
-
-if [ ! -d "cgwallet" ]; then
-    echo "Error: Cloning cgwallet repository failed."
-    exit 1
-fi
-
-echo "Installation of npm, jq, nodejs and near cli probably completed successfully."
-echo "Now you can use rodwallet.sh"
-
-~/cgwallet/rodtwallet.sh genaccount
-
-#chmod 400 your_file
-
-echo "Please write down the account number, you can use it to configue Cableguard TUN"
-echo "You can use RODTWALLET as follows, if you have the correct network and smartcontract set in the NFTCONTRACTID env variable"
-
-~/cgwallet/rodtwallet.sh help
+# Clone and setup cgwallet
+setup_cgwallet
