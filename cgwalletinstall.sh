@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-2.0
 # Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
 
-VERSION="1.90.3"
+VERSION="1.90.91"
 
 # Function to display help message
 show_help() {

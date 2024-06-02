@@ -3,7 +3,7 @@
 #SPDX-License-Identifier: GPL-2.0
 #Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
 
-VERSION="1.90.91"
+VERSION="1.90.71"
 #export RODITCONTRACTID=$(cat ./walletsh/account)
 echo "Version" $VERSION "running on " $BLOCKCHAIN_ENV "at Smart Contract" $RODITCONTRACTID " Get help with: "$0" help"
 
