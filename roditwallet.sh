@@ -3,7 +3,7 @@
 #SPDX-License-Identifier: GPL-2.0
 #Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
 
-VERSION="1.90.81"
+VERSION="1.90.83"
 echo "Version" $VERSION "running on " $BLOCKCHAIN_ENV "at Smart Contract" $RODITCONTRACTID " Get help with: "$0" help"
 
 if [ "$1" == "help" ]; then
@@ -53,7 +53,8 @@ if [ -n "$2" ]; then
     if [ "$2" == "keys" ]; then
         key_file="$HOME/.near-credentials/$BLOCKCHAIN_ENV/$1.json"
         echo "The contents of the key file (PrivateKey in Base58 account ID in Hex) are:"
-        cat "$key_file" | jq -r '"\(.private_key | sub("ed25519:"; ""))\n\(.account_id)"'
+        cat "$key_file" | jq -r '.private_key' | cut -d':' -f2
+        cat "$key_file" | jq -r '.implicit_account_id' | cut -d':' -f2
         exit 0
     else
         echo "RODiT Contents"
