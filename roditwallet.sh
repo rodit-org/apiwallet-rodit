@@ -21,7 +21,7 @@ if [ "$1" == "help" ]; then
 fi
 
 if [ "$1" == "genaccount" ]; then
-    account=$(~/near-cli-rs/target/release/near account create-account \
+    account=$(near account create-account \
         fund-later \
         use-auto-generation \
         save-to-folder ~/.near-credentials/$BLOCKCHAIN_ENV | grep -oP '(?<=~/.near-credentials/'"$BLOCKCHAIN_ENV"'/)[^/]+(?=.json)')
@@ -39,7 +39,7 @@ fi
 
 if [ "$3" = "init" ] && [ -n "$3" ]; then
     echo "Initializing with 0.01 NEAR "$2""
-    ~/near-cli-rs/target/release/near tokens $1 send-near $2 '0.01 NEAR' network-config $BLOCKCHAIN_ENV sign-with-keychain send
+    near tokens $1 send-near $2 '0.01 NEAR' network-config $BLOCKCHAIN_ENV sign-with-keychain send
     exit 0
 fi
 
@@ -57,7 +57,7 @@ if [ -n "$2" ]; then
         exit 0
     else
         echo "RODiT Contents"
-	    output3=$(~/near-cli-rs/target/release/near contract call-function as-read-only "$RODITCONTRACTID" \
+	    output3=$(near contract call-function as-read-only "$RODITCONTRACTID" \
             nft_tokens_for_owner text-args "{\"account_id\": \"$1\"}" network-config "$BLOCKCHAIN_ENV" now | \
             sed '/^No logs/d;/^------------/d;/^Result:/d;/^[[:space:]]*$/d' | \
             jq --arg token_id "$2" '.[] | select(.token_id == $token_id) | {token_id, metadata}'  2>/dev/null)
@@ -69,11 +69,11 @@ fi
 if [ -n "$1" ]; then
     echo "There is a lag while collecting information from the blockchain"
     echo "The following is a list of RODiT belonging to the input account:"
-    output2=$(~/near-cli-rs/target/release/near contract call-function as-read-only "$RODITCONTRACTID" \
+    output2=$(near contract call-function as-read-only "$RODITCONTRACTID" \
         nft_tokens_for_owner text-args "{\"account_id\": \"$1\"}" network-config "$BLOCKCHAIN_ENV" now)
     filtered_output2=$(echo "$output2" | grep 'token_id'| awk -F'"' '{print $4}')
     echo "$filtered_output2"
-    near_state=$(~/near-cli-rs/target/release/near account view-account-summary "$1" \
+    near_state=$(near account view-account-summary "$1" \
         network-config "$BLOCKCHAIN_ENV" now)
     balance=$(echo "$near_state"|grep "Native account balance")
     if [ -z "$balance" ]; then
