@@ -4,7 +4,7 @@
 # Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
 
 # minor version is odd for testnet, even for mainnet
-VERSION="1.1.31"
+VERSION="1.3.31"
 
 # Print script information
 # export NFTCONTRACTID=$(cat ~/cgtun/cgsh/account)
@@ -33,8 +33,8 @@ if [ ! -f "$json_file" ]; then
 fi
 
 # Run cableguard and start the tunnel
-echo "sudo ./target/release/cableguard-cli -v trace $json_file >> ~/cableguard.$1.log 2>&1"
-if sudo ./target/release/cableguard-cli -v trace $json_file >> ~/cableguard.$1.log 2>&1; then
+echo "sudo cableguard-cli -v trace $json_file >> ~/cableguard.$1.log 2>&1"
+if sudo cableguard-cli -v trace $json_file >> ~/cableguard.$1.log 2>&1; then
     echo "cableguard-cli: Started and created the tunnel."
 else
     echo "Error: cableguard-cli failed to start."
