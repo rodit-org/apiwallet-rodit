@@ -61,9 +61,6 @@ fi
 echo "sudo nmcli connection modify $interface_name ipv4.dns $dns_resolver"
 sudo nmcli connection modify $interface_name ipv4.dns "$dns_resolver"
 
-echo "sudo nmcli connection modify" $interface_name "ipv4.dns 8.8.8.8,8.8.4.4"
-sudo nmcli connection modify $interface_name ipv4.dns "8.8.8.8,8.8.4.4"
-
 # Check if the interface name is not empty
 if [ -n "$interface_name" ]; then
     # Update bring the interface up

@@ -1,0 +1,15 @@
+Source: cgroditvpn
+Section: unknown
+Priority: optional
+Maintainer: Vicente Aceituno Canal <vpn@cableguard.org>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.0
+Homepage: https://www.cableguard.org
+#Vcs-Browser: https://salsa.debian.org/debian/cgtools
+#Vcs-Git: https://salsa.debian.org/debian/cgtools.git
+Rules-Requires-Root: no
+Package: cgroditvpn
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Cableguard scripts to manage the wallet of implicit accounts and manage the VPN connection
+ A longer explanation.
