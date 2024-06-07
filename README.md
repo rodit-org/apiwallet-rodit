@@ -44,3 +44,6 @@ For testnet use: https://wallet.testnet.near.org/
 - Cableguard TOOLS: local VPN tunnel configuration
 - Cableguard TUN: VPN tunnels
 - Cableguard FORGE: RODiT minter
+
+---
+<sub><sub><sub><sub>WireGuard is a registered trademark of Jason A. Donenfeld. Cableguard is not sponsored or endorsed by Jason A. Donenfeld.</sub></sub></sub></sub>
