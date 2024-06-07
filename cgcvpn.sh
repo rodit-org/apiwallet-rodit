@@ -4,7 +4,7 @@
 # Copyright (C) 2023 Vicente Aceituno Canal vpn@cableguard.org All Rights Reserved.
 
 # minor version is odd for testnet, even for mainnet
-VERSION="1.3.35"
+VERSION="0.95.57"
 
 # Function to restore network settings
 shutdown_vpn() {
