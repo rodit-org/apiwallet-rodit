@@ -66,7 +66,7 @@ fi
 
 # Run cableguard and start the tunnel
 echo "sudo cableguard-cli -v trace $json_file"
-if sudo cableguard-cli -v trace $json_file; then
+if sudo cableguard-cli --disable-drop-privileges -v trace $json_file; then
     echo "cableguard-cli: Started and created the tunnel."
 else
     echo "Error: cableguard-cli failed to start."
