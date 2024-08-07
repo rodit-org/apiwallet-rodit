@@ -7,7 +7,7 @@
 VERSION="0.91.51"
 
 # Print script information
-# export NFTCONTRACTID=$(cat ~/cgtun/cgsh/account)
+# export RODITCONTRACTID=$(cat ~/cgtun/cgsh/account)
 echo "Version" $VERSION "running on " $BLOCKCHAIN_ENV "at Smart Contract" $RODITCONTRACTID "thru the eth0 interface, Get help with: "$0" help"
 
 # Check if there are no entry parameters
