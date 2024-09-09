@@ -9,7 +9,7 @@ More information may be found at [WireGuard.com](https://www.wireguard.com/).**
 
 ## How to Install
 Download with wget from:
-https://cableguard.fra1.digitaloceanspaces.com/cgroditwallet.sh
+https://cableguard.fra1.digitaloceanspaces.com/roditwallet.sh
 https://cableguard.fra1.digitaloceanspaces.com/cgcvpn.sh
 https://cableguard.fra1.digitaloceanspaces.com/cgsvpn-eth0.sh
 https://cableguard.fra1.digitaloceanspaces.com/near-cli-rs_0.10.2-1_amd64.deb
@@ -25,16 +25,16 @@ Run the any script with the "help" option for instructions
 
 CGRODITWALLET options:
 
-Usage: ./cgroditwallet.sh [account_id] [Options]
+Usage: ./roditwallet.sh [account_id] [Options]
 
 Options:
--  ./cgroditwallet.sh                   : List of available accounts
--  ./cgroditwallet.sh *accountID*       : Lists the RODiT Ids in the account and its balance
--  ./cgroditwallet.sh *accountID* keys  : Displays the accountID and the Private Key of the account
--  ./cgroditwallet.sh *accountID* roditId: Displays the indicated RODiT
--  ./cgroditwallet.sh *fundingaccountId* *unitializedaccountId* init   : Initializes account with 0.01 NEAR from funding acount
--  ./cgroditwallet.sh *originaccountId*  *destinationaccountId* roditId : Sends RODiT from origin account to destination account
--  ./cgroditwallet.sh genaccount        : Creates a new uninitialized accountID
+-  ./roditwallet.sh                   : List of available accounts
+-  ./roditwallet.sh *accountID*       : Lists the RODiT Ids in the account and its balance
+-  ./roditwallet.sh *accountID* keys  : Displays the accountID and the Private Key of the account
+-  ./roditwallet.sh *accountID* roditId: Displays the indicated RODiT
+-  ./roditwallet.sh *fundingaccountId* *unitializedaccountId* init   : Initializes account with 0.01 NEAR from funding acount
+-  ./roditwallet.sh *originaccountId*  *destinationaccountId* roditId : Sends RODiT from origin account to destination account
+-  ./roditwallet.sh genaccount        : Creates a new uninitialized accountID
 
 From a funded wallet you need to send 0.01 NEAR to each new account to prime it
 For testnet use: https://wallet.testnet.near.org/
